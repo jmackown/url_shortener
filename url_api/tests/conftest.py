@@ -11,6 +11,9 @@ class LocalTestingConfig:
     BASE_URL = "http://www.fakeurl.com"
 
 
+redis_test_data = {"this_url_does_exist": "a_real_url"}
+
+
 @pytest.fixture(scope="session")
 def app(*args, **kwargs):
 
@@ -19,7 +22,8 @@ def app(*args, **kwargs):
     routes = [str(p) for p in app.url_map.iter_rules()]
     print(f"routes: {routes}")
 
-    app.redis = fakeredis.FakeStrictRedis()
+    app.redis = fakeredis.FakeStrictRedis(charset="utf-8", decode_responses=True)
+    app.redis.mset(redis_test_data)
 
     yield app
 

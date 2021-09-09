@@ -11,6 +11,8 @@ def create_app(flask=Flask, config=Config):
     app.config.from_object(config)
     app.register_blueprint(api_blueprint)
 
-    app.redis = redis.Redis(host="redis", port=6379)
+    app.redis = redis.Redis(
+        host="redis", port=6379, charset="utf-8", decode_responses=True
+    )
 
     return app
