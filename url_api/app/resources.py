@@ -1,4 +1,7 @@
-from flask import jsonify, Blueprint, redirect, abort
+import random
+import string
+
+from flask import jsonify, Blueprint, redirect, abort, request
 from flask import current_app
 
 api = Blueprint("api", __name__)
@@ -14,10 +17,31 @@ def handle_healthcheck():
         return jsonify("no redis"), 500
 
 
-@api.get("/<short_url>")
+@api.route("/<short_url>", methods=["GET"])
 async def redirect_short_url(short_url):
     long_url = current_app.redis.get(short_url)
     if long_url:
         return redirect(long_url, 302)
     else:
         abort(404)
+
+
+@api.route("/add", methods=["POST"])
+def add_new_short_url():
+    body = request.json
+
+    long_url = body["long_url"]
+
+    while True:
+        short_url = create_short_url()
+        exists = current_app.redis.get(short_url)
+        if not exists:
+            current_app.redis.set(short_url, long_url)
+            break
+
+    return jsonify(short_url), 200
+
+
+def create_short_url():
+    possible_chars = string.ascii_letters
+    return "".join(random.choice(possible_chars) for i in range(10))

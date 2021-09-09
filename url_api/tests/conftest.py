@@ -30,5 +30,4 @@ def app(*args, **kwargs):
 
 @pytest.fixture(scope="function")
 def test_server(app):
-
     return app.test_client()
