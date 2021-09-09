@@ -10,15 +10,18 @@
 
 ## Run
 
-Pre-requisites: `docker`
+Pre-requisites: `docker`, `postman` (optional)
 
 * clone the repo
 * `cd url_shortener`
 * `docker-compose build`
 * `docker-compose run`
 
-The API should be available on [http://0.0.0.0:8004/](http://0.0.0.0:8004/sdfssd)
+The API should be available on [http://0.0.0.0:8004/](http://0.0.0.0:8004/)
 
+Check out an existing link to see it in action: [http://0.0.0.0:8004/OjrHZTlVDa](http://0.0.0.0:8004/OjrHZTlVDa)
+
+For more examples, import the Postman collection in `url_shortener/docs`
 
 ## Develop
 *caveat - only tested on a Mac!*
@@ -36,7 +39,10 @@ Pre-requisites: `python 3.9`
 ## Test
 ## To Do
 
-- [ ] add postman suite and instructions
+- [x] add an example link
+- [x] add postman suite and instructions
+- [ ] add basic web page to enter new url
+- [ ] add OpenAPI docs
 
 ## Improvements
 
