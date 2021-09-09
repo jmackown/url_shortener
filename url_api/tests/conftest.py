@@ -6,8 +6,10 @@ from url_api.app import create_app
 
 mock_redis_server = fakeredis.FakeServer()
 
+
 class LocalTestingConfig:
-    BASE_URL = 'http://www.fakeurl.com'
+    BASE_URL = "http://www.fakeurl.com"
+
 
 @pytest.fixture(scope="session")
 def app(*args, **kwargs):
