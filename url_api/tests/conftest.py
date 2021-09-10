@@ -12,11 +12,15 @@ class LocalTestingConfig:
     BASE_URL = "http://www.fakeurl.com"
 
 
-redis_test_data = {"this_url_does_exist": "a_real_url"}
+redis_test_data = {
+    "this_url_does_exist": "a_real_url",
+    "this_url_does_exist_2": "a_real_url",
+    "this_url_does_exist_3": "a_real_url",
+}
 
 
 @pytest.fixture(scope="session")
-def app(*args, **kwargs):
+def test_app(*args, **kwargs):
 
     app = create_app(Flask, config=LocalTestingConfig)
 
@@ -24,14 +28,13 @@ def app(*args, **kwargs):
     print(f"routes: {routes}")
 
     app.redis = fakeredis.FakeStrictRedis(charset="utf-8", decode_responses=True)
-    app.redis.mset(redis_test_data)
 
     yield app
 
 
 @pytest.fixture(scope="function")
-def test_server(app):
-    return app.test_client()
+def test_server(test_app):
+    return test_app.test_client()
 
 
 @pytest.fixture(scope="function")

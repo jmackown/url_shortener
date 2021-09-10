@@ -17,11 +17,39 @@ def handle_healthcheck():
         return jsonify("no redis"), 500
 
 
+@api.route("/<short_url>/lookup", methods=["GET"])
+def lookup_short_url(short_url):
+
+    long_url = current_app.redis.get(short_url)
+
+    if long_url:
+        result = {
+            "original_url": long_url,
+            "shortened_url": f"{current_app.config['BASE_URL']}/{short_url}",
+        }
+
+        return jsonify(result), 200
+    else:
+        abort(404)
+
+
 @api.route("/<short_url>", methods=["GET"])
-async def redirect_short_url(short_url):
+def redirect_short_url(short_url):
     long_url = current_app.redis.get(short_url)
     if long_url:
         return redirect(long_url, 302)
+    else:
+        abort(404)
+
+
+@api.route("/lookup", methods=["GET"])
+def lookup_all_short_urls():
+
+    all_urls = current_app.redis.keys()
+
+    if all_urls:
+
+        return jsonify(all_urls), 200
     else:
         abort(404)
 

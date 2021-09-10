@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "14521744-fe74-44dd-93da-3946a4ca2395",
+		"_postman_id": "79165626-59b0-4994-8c80-eeb2e89b62a4",
 		"name": "url_shortener",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -29,11 +29,28 @@
 		},
 		{
 			"name": "existing_short_url",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Redirect to correct place\", function () {",
+							"    pm.request.headers.get(\"Referer\") == 'https://www.lego.com/en-gb/product/nasa-space-shuttle-discovery-10283';",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://0.0.0.0:8004/OjrHZTlVDa",
+					"raw": "http://0.0.0.0:8004/luEkRikqBv/lookup",
 					"protocol": "http",
 					"host": [
 						"0",
@@ -43,7 +60,8 @@
 					],
 					"port": "8004",
 					"path": [
-						"OjrHZTlVDa"
+						"luEkRikqBv",
+						"lookup"
 					]
 				}
 			},
@@ -72,7 +90,58 @@
 			"response": []
 		},
 		{
+			"name": "existing_short_url_lookup",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://0.0.0.0:8004/luEkRikqBv/lookup",
+					"protocol": "http",
+					"host": [
+						"0",
+						"0",
+						"0",
+						"0"
+					],
+					"port": "8004",
+					"path": [
+						"luEkRikqBv",
+						"lookup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "add_new_url",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
