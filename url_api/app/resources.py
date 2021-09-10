@@ -39,7 +39,12 @@ def add_new_short_url():
             current_app.redis.set(short_url, long_url)
             break
 
-    return jsonify(short_url), 200
+    result = {
+        "original_url": long_url,
+        "shortened_url": f"{current_app.config['BASE_URL']}/{short_url}",
+    }
+
+    return jsonify(result), 201
 
 
 def create_short_url():

@@ -2,7 +2,8 @@ import pytest
 import fakeredis
 from flask import Flask
 
-from url_api.app import create_app
+
+from url_api.app import create_app, resources
 
 mock_redis_server = fakeredis.FakeServer()
 
@@ -31,3 +32,11 @@ def app(*args, **kwargs):
 @pytest.fixture(scope="function")
 def test_server(app):
     return app.test_client()
+
+
+@pytest.fixture(scope="function")
+def mock_create_short_url(monkeypatch):
+    def predictable_short_url():
+        return "qwertyuiop"
+
+    monkeypatch.setattr(resources, "create_short_url", predictable_short_url)
