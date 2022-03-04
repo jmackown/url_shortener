@@ -20,9 +20,7 @@ def handle_healthcheck():
 @api.route("/<short_url>/lookup", methods=["GET"])
 def lookup_short_url(short_url):
 
-    long_url = current_app.redis.get(short_url)
-
-    if long_url:
+    if long_url := current_app.redis.get(short_url):
         result = {
             "original_url": long_url,
             "shortened_url": f"{current_app.config['BASE_URL']}/{short_url}",
@@ -35,8 +33,7 @@ def lookup_short_url(short_url):
 
 @api.route("/<short_url>", methods=["GET"])
 def redirect_short_url(short_url):
-    long_url = current_app.redis.get(short_url)
-    if long_url:
+    if long_url := current_app.redis.get(short_url):
         return redirect(long_url, 302)
     else:
         abort(404)
@@ -45,10 +42,7 @@ def redirect_short_url(short_url):
 @api.route("/lookup", methods=["GET"])
 def lookup_all_short_urls():
 
-    all_urls = current_app.redis.keys()
-
-    if all_urls:
-
+    if all_urls := current_app.redis.keys():
         return jsonify(all_urls), 200
     else:
         abort(404)
@@ -77,4 +71,4 @@ def add_new_short_url():
 
 def create_short_url():
     possible_chars = string.ascii_letters
-    return "".join(random.choice(possible_chars) for i in range(10))
+    return "".join(random.choice(possible_chars) for _ in range(10))
